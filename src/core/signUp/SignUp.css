@@ -36,9 +36,9 @@
 
 .form-container input {
   border-radius: 20px;
-  color: white;
+  /* color: white; */
   border: none;
-  font-family: "Times New Roman", Times, serif;
+  /* font-family: "Times New Roman", Times, serif; */
 }
 
 .signUp-button .sBtn {

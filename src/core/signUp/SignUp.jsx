@@ -1,8 +1,7 @@
 import "./SignUp.css";
-import image1 from "../../assets/images/image1.jpg";
 import { useAuth } from "../../utilities/auth/AuthContext";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import validation from "../validation";
 
 const SignUp = () => {
@@ -59,9 +58,6 @@ const SignUp = () => {
         <div className="signUp">
           <div className="signUp-container">
             <div className="row gx-0 align-items-center vh-100 border rounded-2">
-              <div className="col-md-6">
-                <img src={image1} className="img-fluid" alt="signUp" />
-              </div>
               <div className="col-md-6 signUp-form">
                 <form onSubmit={handleSubmit}>
                   <div className="form-title py-2 mb-3">

@@ -1,5 +1,4 @@
 import "./Login.css";
-import image1 from "../../assets/images/image1.jpg";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import validation from "../validation";
@@ -8,12 +7,13 @@ import { useAuth } from "../../utilities/auth/AuthContext";
 const Login = () => {
   const [values, setValues] = useState({ email: "", password: "" });
   const { isAuthenticated, login } = useAuth();
+  const [formErrors, setFormErrors] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
-  /**If user already logged; then navigate to play page/** */
+  // If user already logged; then redirect user the to home page
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/play");
+      navigate("/home");
     }
   }, [isAuthenticated, navigate]);
 
@@ -22,7 +22,7 @@ const Login = () => {
    * @param {onChange event} e
    */
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    setValues({ ...values, [e?.target?.name]: e?.target?.value });
   };
 
   /**
@@ -33,16 +33,13 @@ const Login = () => {
     // Prevent default events execution
     e.preventDefault();
     const validationErrors = validation(values, false);
+    setFormErrors(() => validationErrors);
+
     // Check for errors
     if (Object.keys(validationErrors).length === 0) {
-      login(values.email, values.password);
+      login(values?.email, values?.password);
       // Clear input fields
       setValues({ email: "", password: "" });
-    } else {
-      // Show validation errors as alerts
-      Object.values(validationErrors).forEach((error) => {
-        alert(error);
-      });
     }
   };
 
@@ -50,58 +47,66 @@ const Login = () => {
     <>
       {/**Render login form only if user is not authenticated */}
       {!isAuthenticated && (
-        <div className="login">
-          <div className="login-container">
-            <div className="row gx-0 align-items-center vh-100 border rounded-2">
-              <div className="col-md-6">
-                <img src={image1} className="img-fluid" alt="login" />
-              </div>
-              <div className="col-md-6 login-form">
-                <form onSubmit={handleLoginFormSubmission}>
-                  <div className="form-title py-2 mb-3">
-                    <span>PDF HUB</span>
-                    <h1>Welcome Back</h1>
-                    <h2>Log in to the PDF Hub</h2>
-                  </div>
-                  <div className="form-container mb-2">
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="InputEmail"
-                      placeholder="Email"
-                      value={values.email}
-                      name="email"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-container mb-3">
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="InputPassword"
-                      placeholder="Password"
-                      value={values.password}
-                      name="password"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="form-text">
-                    <p>Forget your password?</p>
-                  </div>
-                  <div className=" login-button text-center">
-                    <Link to={"/home"}>
-                      <button type="button" className="lBtn">
-                        Login
-                      </button>
-                    </Link>
-                  </div>
-                  <div className="login-text">
-                    <p>
-                      Don't have an account? <span>Sign Up</span>
+        <div className="login-container container">
+          <div className="row my-5">
+            <div className="login-form col-md-8 mx-auto text-center py-5 border rounded-2 shadow">
+              <form className="my-5" onSubmit={handleLoginFormSubmission}>
+                <div className="form-title py-2 mb-3">
+                  <span>PDF HUB</span>
+                  <h1>Welcome Back</h1>
+                </div>
+                <div className="form-container mb-2 col-12 com-md-10 mx-auto">
+                  <input
+                    type="email"
+                    className="form-control p-3 py-2 rounded-5"
+                    id="InputEmail"
+                    placeholder="Enter email address"
+                    value={values.email}
+                    name="email"
+                    onChange={handleChange}
+                  />
+                  {formErrors?.email && (
+                    <p className="mt-2 text-start ms-3 text-danger">
+                      {formErrors?.email}
                     </p>
-                  </div>
-                </form>
-              </div>
+                  )}
+                </div>
+                <div className="form-container mb-2 col-12 com-md-10 mx-auto">
+                  <input
+                    type="password"
+                    className="form-control p-3 py-2 rounded-5"
+                    id="InputPassword"
+                    placeholder="Enter password"
+                    value={values.password}
+                    name="password"
+                    onChange={handleChange}
+                  />
+                  {formErrors?.password && (
+                    <p className="mt-2 text-start ms-3 text-danger">
+                      {formErrors?.password}
+                    </p>
+                  )}
+                </div>
+                <div className="form-text mt-4">
+                  <p className="fw-bold">Forget your password?</p>
+                </div>
+                <div className="login-button text-center mt-3">
+                  <button
+                    type="submit"
+                    className="btn btn-secondary col-6 rounded-5 py-3"
+                  >
+                    Login
+                  </button>
+                </div>
+                <div className="login-text mt-4">
+                  <p>
+                    Don't have an account? <span></span>
+                    <Link className="text-decoration-none fw-bold" to="/signUp">
+                      Sign Up
+                    </Link>
+                  </p>
+                </div>
+              </form>
             </div>
           </div>
         </div>
