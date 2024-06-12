@@ -1,3 +1,7 @@
 .login-form {
   background-color: whitesmoke;
 }
+
+.login-form .form-title h1 {
+  color: #b1ee46;
+}

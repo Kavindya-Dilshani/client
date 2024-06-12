@@ -32,6 +32,7 @@ const Login = () => {
   const handleLoginFormSubmission = (e) => {
     // Prevent default events execution
     e.preventDefault();
+    
     const validationErrors = validation(values, false);
     setFormErrors(() => validationErrors);
 
@@ -55,7 +56,7 @@ const Login = () => {
                   <span>PDF HUB</span>
                   <h1>Welcome Back</h1>
                 </div>
-                <div className="form-container mb-2 col-12 com-md-10 mx-auto">
+                <div className="form-container mb-2 col-10 com-md-8 mx-auto">
                   <input
                     type="email"
                     className="form-control p-3 py-2 rounded-5"
@@ -71,7 +72,7 @@ const Login = () => {
                     </p>
                   )}
                 </div>
-                <div className="form-container mb-2 col-12 com-md-10 mx-auto">
+                <div className="form-container mb-2 col-10 com-md-8 mx-auto">
                   <input
                     type="password"
                     className="form-control p-3 py-2 rounded-5"
@@ -100,8 +101,8 @@ const Login = () => {
                 </div>
                 <div className="login-text mt-4">
                   <p>
-                    Don't have an account? <span></span>
-                    <Link className="text-decoration-none fw-bold" to="/signUp">
+                    Don't have an account?
+                    <Link className="text-decoration-none fw-bold ms-2" to="/signUp">
                       Sign Up
                     </Link>
                   </p>
