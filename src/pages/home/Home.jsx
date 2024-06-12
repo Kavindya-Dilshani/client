@@ -1,33 +1,43 @@
-
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./Home.css";
-import axios  from 'axios';
+import axios from "axios";
 
 const Home = () => {
   const [title, setTitle] = useState("");
   const [files, setFiles] = useState([]);
+  const [allImage, setAllImage] = useState(null);
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    getPDF();
+  }, []);
+
+  const getPDF = async () => {
+    const result = await axios.get("http://localhost:5000/get-files");
+    console.log(result.data.data);
+    setAllImage(result.data.data);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
     files.forEach((file) => {
-      formData.append("files", file);
+      formData.append("file", file);
     });
     formData.append("title", title);
 
     console.log(title, files);
 
-    const result = await axios.post("http://localhost:5000/upload-files",
+    const result = await axios.post(
+      "http://localhost:5000/upload-files",
       formData,
-{
-  headers: { "Content-type": "multipart/form-data"},
-}
-    )
-    console.log(result)
+      {
+        headers: { "Content-type": "multipart/form-data" },
+      }
+    );
+    console.log(result);
   };
-
 
   const handleFiles = (event) => {
     setFiles([...event.target.files]);
@@ -54,9 +64,13 @@ const Home = () => {
             <div className="home-title mb-4">
               <h2 className="text-black fs-2 mb-5 pb-5 mt-2">Uploaded Files</h2>
             </div>
-            <p className="text-black text-wrap file-text w-100">
-              Mannual steps.doc
-            </p>
+            {allImage == null
+              ? ""
+              : allImage.map((data) => {
+                  <p className="text-black text-wrap file-text w-100">
+                    {data.title} 
+                  </p>;
+                })}
           </div>
 
           <div className="col-md-6 right-box">
