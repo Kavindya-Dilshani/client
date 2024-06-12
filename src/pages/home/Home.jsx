@@ -68,7 +68,7 @@ const Home = () => {
               ? ""
               : allImage.map((data) => {
                   <p className="text-black text-wrap file-text w-100">
-                    {data.title} 
+                    {data.title}
                   </p>;
                 })}
           </div>

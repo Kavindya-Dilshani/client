@@ -1,22 +1,21 @@
-
-.box-area{
+.box-area {
   width: 930px;
 }
 
-.left-box{
+.left-box {
   background-color: whitesmoke;
 }
 
-.home-title h2{
-  font-family: 'Times New Roman', Times, serif;
+.home-title h2 {
+  font-family: "Times New Roman", Times, serif;
   font-weight: 600;
 }
 
-.right-box{
+.right-box {
   padding: 40px 30px 40px 40px;
 }
 
-.border-box{
+.border-box {
   height: 90px;
   border-radius: 5px;
   border: 2px dashed gray;
@@ -25,32 +24,32 @@
   color: black;
   margin: 1rem 0.5rem 0 0.5rem;
 }
-.border-box input{
+.border-box input {
   display: none;
 }
 
-.upload-button{
+.upload-button {
   background-color: coral;
   border-radius: 25px;
   margin-top: 2rem;
 }
 
-.upload-button .btn{
+.upload-button .btn {
   font-weight: 600;
   font-size: 17px;
 }
 
 /** Responsive */
-@media only screen and (max-width:768px) {
-  .box-area{
+@media only screen and (max-width: 768px) {
+  .box-area {
     margin: 0 10px;
   }
 
-  .left-box{
+  .left-box {
     height: 100px;
     overflow: hidden;
   }
-  .right-box{
+  .right-box {
     padding: 20px;
   }
 }
