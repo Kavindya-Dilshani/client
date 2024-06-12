@@ -5,6 +5,7 @@ import SignUp from "./core/signUp/SignUp";
 import Home from "./pages/home/Home";
 import { AuthProvider } from "./utilities/auth/AuthProvider";
 import { PrivateRoutes } from "./utilities/auth/PrivateRoutes";
+import PdfViewer from "./pages/pdf-viewer/PdfViewer";
 
 function App() {
   return (
@@ -14,12 +15,11 @@ function App() {
           {/* public routes */}
           <Route path="/" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
-          <Route path="/home" element={<Home />} />
-
-          {/* private routes
+          {/* private routes */}
           <Route element={<PrivateRoutes />}>
             <Route path="/home" element={<Home />} />
-          </Route> */}
+            <Route path="/pdf-viewer/:documentId" element={<PdfViewer />} />
+          </Route>
         </Routes>
       </AuthProvider>
     </div>

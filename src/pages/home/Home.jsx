@@ -3,24 +3,35 @@ import "./Home.css";
 import axios from "axios";
 import { apiEndpoints } from "../../endpoints/endpoints";
 import { useAuth } from "../../utilities/auth/AuthContext";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
   const { getUser } = useAuth();
+  const [files, setFiles] = useState([]);
 
-  // const [allImage, setAllImage] = useState(null);
+  useEffect(() => {
+    const getFiles = async () => {
+      try {
+        const userId = getUser().userId;
+        const response = await axios.get(apiEndpoints.getFiles, {
+          params: { userId },
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        setFiles(response?.data?.files);
+      } catch (error) {
+        console.error("Error fetching files:", error);
+      }
+    };
 
-  // useEffect(() => {
-  //   getPDF();
-  // }, []);
-
-  // const getPDF = async () => {
-  //   const result = await axios.get("http://localhost:5000/get-files");
-  //   console.log(result.data.data);
-  //   setAllImage(result.data.data);
-  // };
+    if (getUser) {
+      getFiles();
+    }
+  }, [getUser]);
 
   /**
    * Handles form submission for file upload.
@@ -138,19 +149,39 @@ const Home = () => {
             </form>
           </div>
 
-          <hr className="my-3" />
-          {/* <div className="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box">
-            <div className="home-title mb-4">
-              <h2 className="text-black fs-2 mb-5 pb-5 mt-2">Uploaded Files</h2>
+          <div className="row">
+            <div className="home-title mb-4 text-center">
+              <h4 className="text-black mt-5 pt-3">Uploaded Files</h4>
             </div>
-            {allImage == null
-              ? ""
-              : allImage.map((data) => {
-                  <p className="text-black text-wrap file-text w-100">
-                    {data.title}
-                  </p>;
-                })}
-          </div> */}
+            <div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">File title</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {files?.length > 0 &&
+                    files.map((data, index) => {
+                      return (
+                        <tr key={index}>
+                          <th scope="row">{index}</th>
+                          <td>
+                            <Link
+                              to={`/pdf-viewer/${data._id}`}
+                              className="text-wrap file-text w-100"
+                            >
+                              {data.title}
+                            </Link>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </>
