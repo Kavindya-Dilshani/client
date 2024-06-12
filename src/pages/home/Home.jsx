@@ -2,11 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import "./Home.css";
 import axios from "axios";
 import { apiEndpoints } from "../../endpoints/endpoints";
+import { useAuth } from "../../utilities/auth/AuthContext";
 
 const Home = () => {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
+  const { getUser } = useAuth();
 
   // const [allImage, setAllImage] = useState(null);
 
@@ -32,6 +34,7 @@ const Home = () => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("title", title);
+    formData.append("userId", getUser()?.userId);
 
     try {
       const response = await axios.post(apiEndpoints.uploadFile, formData, {
