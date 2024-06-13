@@ -138,7 +138,7 @@ export const AuthProvider = (props) => {
     // Set isAuthenticated to false
     setIsAuthenticated(() => false);
     // Navigate to login page
-    navigate("/login");
+    navigate("/");
   };
 
   /**

@@ -9,7 +9,7 @@ const Home = () => {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
-  const { getUser } = useAuth();
+  const { getUser, logout } = useAuth();
   const [files, setFiles] = useState([]);
 
   const getFiles = useCallback(async () => {
@@ -105,6 +105,14 @@ const Home = () => {
 
   return (
     <>
+      <div className="d-flex justify-content-end py-3 bg-light">
+        <button
+          className="btn btn-secondary py-2 px-3 mx-1 mx-md-4 rounded-2"
+          onClick={logout}
+        >
+          Logout
+        </button>
+      </div>
       <div className="home-container container mt-5">
         <div className="row my-5">
           <div className="upload-file-container border">
