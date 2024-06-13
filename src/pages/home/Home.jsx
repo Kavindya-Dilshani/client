@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import "./Home.css";
 import axios from "axios";
 import { apiEndpoints } from "../../endpoints/endpoints";
@@ -12,26 +12,26 @@ const Home = () => {
   const { getUser } = useAuth();
   const [files, setFiles] = useState([]);
 
-  useEffect(() => {
-    const getFiles = async () => {
-      try {
-        const userId = getUser().userId;
-        const response = await axios.get(apiEndpoints.getFiles, {
-          params: { userId },
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        setFiles(response?.data?.files);
-      } catch (error) {
-        console.error("Error fetching files:", error);
-      }
-    };
+  const getFiles = useCallback(async () => {
+    try {
+      const userId = getUser().userId;
+      const response = await axios.get(apiEndpoints.getFiles, {
+        params: { userId },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      setFiles(response?.data?.files);
+    } catch (error) {
+      console.error("Error fetching files:", error);
+    }
+  }, [getUser]);
 
+  useEffect(() => {
     if (getUser) {
       getFiles();
     }
-  }, [getUser]);
+  }, [getFiles, getUser]);
 
   /**
    * Handles form submission for file upload.
@@ -52,8 +52,9 @@ const Home = () => {
         headers: { "Content-type": "multipart/form-data" },
       });
 
-      if (response?.data?.status === "success") {
+      if (response?.status === 201) {
         console.log("file successfully uploaded!");
+        getFiles();
       } else {
         console.log("file uploading failed!");
       }
@@ -162,11 +163,11 @@ const Home = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {files?.length > 0 &&
+                  {files?.length > 0 ? (
                     files.map((data, index) => {
                       return (
                         <tr key={index}>
-                          <th scope="row">{index}</th>
+                          <th scope="row">{index + 1}</th>
                           <td>
                             <Link
                               to={`/pdf-viewer/${data._id}`}
@@ -177,7 +178,15 @@ const Home = () => {
                           </td>
                         </tr>
                       );
-                    })}
+                    })
+                  ) : (
+                    <tr
+                      className="py-3 d-flex align-items-center"
+                      style={{ height: "100px" }}
+                    >
+                      <td className="border-0">No files found</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
