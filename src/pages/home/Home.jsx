@@ -14,11 +14,14 @@ const Home = () => {
 
   const getFiles = useCallback(async () => {
     try {
+      // Get auth token from local storage
+      const token = localStorage.getItem("authToken");
       const userId = getUser().userId;
       const response = await axios.get(apiEndpoints.getFiles, {
         params: { userId },
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
       setFiles(response?.data?.files);
@@ -48,8 +51,13 @@ const Home = () => {
     formData.append("userId", getUser()?.userId);
 
     try {
+      // Get auth token from local storage
+      const token = localStorage.getItem("authToken");
       const response = await axios.post(apiEndpoints.uploadFile, formData, {
-        headers: { "Content-type": "multipart/form-data" },
+        headers: {
+          "Content-type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response?.status === 201) {
