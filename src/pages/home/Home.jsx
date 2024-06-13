@@ -154,7 +154,7 @@ const Home = () => {
               <h4 className="text-black mt-5 pt-3">Uploaded Files</h4>
             </div>
             <div>
-              <table class="table">
+              <table className="table">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
