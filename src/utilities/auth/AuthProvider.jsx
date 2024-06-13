@@ -64,7 +64,9 @@ export const AuthProvider = (props) => {
       if (response?.data?.status === "success") {
         // Get token and user values from response
         const { token, user } = response?.data;
-        localStorage.setItem("authToken", token);
+        // Remove Bearer from the token
+        const modifiedToken = token.replace("Bearer ", "");
+        localStorage.setItem("authToken", modifiedToken);
         // Store user object as JSON string
         localStorage.setItem("user", JSON.stringify(user));
         // Set isAuthenticated to true
@@ -106,7 +108,9 @@ export const AuthProvider = (props) => {
       if (response?.data?.status === "success") {
         // Get token and user values from response
         const { token, user } = response?.data;
-        localStorage.setItem("authToken", token);
+        // Remove Bearer from the token
+        const modifiedToken = token.replace("Bearer ", "");
+        localStorage.setItem("authToken", modifiedToken);
         // Store user object as JSON string
         localStorage.setItem("user", JSON.stringify(user));
         // Set isAuthenticated to true
