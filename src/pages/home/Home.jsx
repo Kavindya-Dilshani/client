@@ -11,6 +11,8 @@ const Home = () => {
   const fileInputRef = useRef(null);
   const { getUser, logout } = useAuth();
   const [files, setFiles] = useState([]);
+  const [isUploadingSuccess, setIsUploadingSuccess] = useState(true);
+  const [showValuesMissingError, setShowValuesMissingError] = useState(false);
 
   const getFiles = useCallback(async () => {
     try {
@@ -44,30 +46,41 @@ const Home = () => {
    */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Create request
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("title", title);
-    formData.append("userId", getUser()?.userId);
+    setShowValuesMissingError(false);
+    if (title && file) {
+      setIsUploadingSuccess(true);
+      // Create request
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("title", title);
+      formData.append("userId", getUser()?.userId);
 
-    try {
-      // Get auth token from local storage
-      const token = localStorage.getItem("authToken");
-      const response = await axios.post(apiEndpoints.uploadFile, formData, {
-        headers: {
-          "Content-type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      try {
+        // Get auth token from local storage
+        const token = localStorage.getItem("authToken");
+        const response = await axios.post(apiEndpoints.uploadFile, formData, {
+          headers: {
+            "Content-type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      if (response?.status === 201) {
-        console.log("file successfully uploaded!");
-        getFiles();
-      } else {
-        console.log("file uploading failed!");
+        if (response?.status === 201) {
+          console.log("file successfully uploaded!");
+          getFiles();
+          // Reset form inputs after successful upload
+          setTitle("");
+          setFile(null);
+        } else {
+          setIsUploadingSuccess(false);
+          console.log("file uploading failed!");
+        }
+      } catch (error) {
+        setIsUploadingSuccess(false);
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
+    } else {
+      setShowValuesMissingError(true);
     }
   };
 
@@ -132,6 +145,16 @@ const Home = () => {
                 <span>PDF HUB</span>
                 <h4>Upload your file here</h4>
               </div>
+              {!isUploadingSuccess && (
+                <p className="text-danger">
+                  File uploading is failed, Please try again!
+                </p>
+              )}
+              {showValuesMissingError && (
+                <p className="text-danger">
+                  Please input the required values and try again!
+                </p>
+              )}
               <div className="input-group pb-2">
                 <input
                   type="text"
