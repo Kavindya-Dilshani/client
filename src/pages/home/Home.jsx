@@ -66,14 +66,12 @@ const Home = () => {
         });
 
         if (response?.status === 201) {
-          console.log("file successfully uploaded!");
           getFiles();
           // Reset form inputs after successful upload
           setTitle("");
           setFile(null);
         } else {
           setIsUploadingSuccess(false);
-          console.log("file uploading failed!");
         }
       } catch (error) {
         setIsUploadingSuccess(false);
